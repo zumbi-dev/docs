@@ -1,0 +1,128 @@
+---
+title: 'Rendering PDF'
+api: 'POST https://api.zumbi.dev/v1/pdf'
+description: 'Renders the provided url and returns a temporary url for the PDF file. It is also possible to pass a presignedUrl and upload the file directly to your S3 bucket.'
+---
+
+### Body
+
+<ParamField body='url' type='string' required>
+  URL from the page where the PDF will be generated from.
+</ParamField>
+
+<ParamField body='goto' type='object'>
+  <Expandable title='fields'>
+    <ParamField body='waitUntil' type='enum'>
+      When to consider navigation succeeded, defaults to `load`.
+      <Expandable title='options'>
+        <ul>
+          <li>
+            `load`: consider navigation to be finished when the load event is
+            fired.
+          </li>
+          <li>
+            `domcontentloaded`: consider navigation to be finished when the
+            DOMContentLoaded event is fired.
+          </li>
+          <li>
+            `networkidle0`: consider navigation to be finished when there are no
+            more than 0 network connections for at least 500 ms.
+          </li>
+          <li>
+            `networkidle2`: consider navigation to be finished when there are no
+            more than 2 network connections for at least 500 ms.
+          </li>
+        </ul>
+      </Expandable>
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+<ParamField body='pdf' type='object'>
+  <Expandable title='fields'>
+    <ParamField body='format' type='enum' defaultValue='letter'>
+      <Expandable title='options'>
+        The sizes of each format are as follows:
+        <ul>
+          <li>`Letter`: 8.5in x 11in</li>
+          <li>`Legal`: 8.5in x 14in</li>
+          <li>`Tabloid`: 11in x 17in</li>
+          <li>`Ledger`: 17in x 11in</li>
+          <li>`A0`: 33.1in x 46.8in</li>
+          <li>`A1`: 23.4in x 33.1in</li>
+          <li>`A2`: 16.54in x 23.4in</li>
+          <li>`A3`: 11.7in x 16.54in</li>
+          <li>`A4`: 8.27in x 11.7in</li>
+          <li>`A5`: 5.83in x 8.27in</li>
+          <li>`A6`: 4.13in x 5.83in</li>
+        </ul>
+      </Expandable>
+    </ParamField>
+    <ParamField body='height' type='string | number'>
+      Sets the height of paper. You can pass in a number or a string with a
+      unit.
+    </ParamField>
+    <ParamField body='landscape' type='boolean' defaultValue={false}>
+      Whether to print in landscape orientation.
+    </ParamField>
+    <ParamField body='margin' type='object'>
+      Set the PDF margins.
+      <Expandable title='fields'>
+        <ParamField body='bottom' type='number' />
+        <ParamField body='left' type='number' />
+        <ParamField body='right' type='number' />
+        <ParamField body='top' type='number' />
+      </Expandable>
+    </ParamField>
+    <ParamField body='printBackground' type='boolean' defaultValue={false}>
+      Set to true to print background graphics.
+    </ParamField>
+    <ParamField body='scale' type='number'>
+      Scales the rendering of the web page. Amount must be between 0.1 and 2.
+    </ParamField>
+    <ParamField body='width' type='string | number'>
+      Sets the width of paper. You can pass in a number or a string with a unit.
+    </ParamField>
+
+  </Expandable>
+</ParamField>
+
+<ParamField body='authenticate' type='object'>
+  <Expandable title='fields'>
+    <ParamField body='password' type='string' required />
+    <ParamField body='username' type='string' required />
+  </Expandable>
+</ParamField>
+
+<ParamField body='presignedUrl' type='string'>
+  A presigned URL to upload the PDF file directly to your S3 bucket.
+</ParamField>
+
+### Response
+
+<ResponseField name='url' type='string'>
+  URL from your file.
+</ResponseField>
+
+<RequestExample>
+
+```bash Example Request
+curl --location --request POST 'https://api.zumbi.dev/v1/pdf' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Bearer <YOUR_API_KEY>' \
+--data-raw '{
+    "url": "https://zumbi.dev"
+}'
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json Response
+{
+  "url": "https://tmp.zumbi.dev/022bdcf5-c323-431c-a588-84082bc1bea0.pdf"
+}
+```
+
+</ResponseExample>

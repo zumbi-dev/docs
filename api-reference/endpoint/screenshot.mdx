@@ -1,0 +1,123 @@
+---
+title: 'Taking screenshots'
+api: 'POST https://api.zumbi.dev/v1/screenshots'
+description: 'Takes a screenshot of the provided url and returns a temporary url for the image file. It is also possible to pass a presignedUrl and upload the file directly to your S3 bucket.'
+---
+
+### Body
+
+<ParamField body='url' type='string' required>
+  URL from the page where the screenshot will be taken.
+</ParamField>
+
+<ParamField body='goto' type='object'>
+  <Expandable title='fields'>
+    <ParamField body='waitUntil' type='enum'>
+      When to consider navigation succeeded, defaults to `load`.
+      <Expandable title='options'>
+        <ul>
+          <li>
+            `load`: consider navigation to be finished when the load event is
+            fired.
+          </li>
+          <li>
+            `domcontentloaded`: consider navigation to be finished when the
+            DOMContentLoaded event is fired.
+          </li>
+          <li>
+            `networkidle0`: consider navigation to be finished when there are no
+            more than 0 network connections for at least 500 ms.
+          </li>
+          <li>
+            `networkidle2`: consider navigation to be finished when there are no
+            more than 2 network connections for at least 500 ms.
+          </li>
+        </ul>
+      </Expandable>
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+<ParamField body='screenshot' type='object'>
+  <Expandable title='fields'>
+    <ParamField body='quality' type='number'>
+      Quality of the image, between 0-100. Not applicable to png images.
+    </ParamField>
+    <ParamField body='type' type='enum' defaultValue='png'>
+      <Expandable title='options'>
+        <ul>
+          <li>`png`</li>
+          <li>`jpeg`</li>
+          <li>`webp`</li>
+        </ul>
+      </Expandable>
+    </ParamField>
+    <ParamField body='fromSurface' type='boolean' defaultValue={true}>
+      Capture the screenshot from the surface, rather than the view.
+    </ParamField>
+    <ParamField body='fullPage' type='boolean' defaultValue={false}>
+      When `true`, takes a screenshot of the full page.
+    </ParamField>
+    <ParamField body='omitBackground' type='boolean' defaultValue={false}>
+      Hides default white background and allows capturing screenshots with
+      transparency.
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+<ParamField body='authenticate' type='object'>
+  <Expandable title='fields'>
+    <ParamField body='password' type='string' required />
+    <ParamField body='username' type='string' required />
+  </Expandable>
+</ParamField>
+
+<ParamField body='setViewport' type='object'>
+  <Expandable title='fields'>
+    <ParamField body='height' type='number' required>
+      The page height in pixels.
+    </ParamField>
+    <ParamField body='isLandscape' type='boolean' defaultValue={false}>
+      Specifies if the viewport is in landscape mode.
+    </ParamField>
+    <ParamField body='isMobile' type='boolean' defaultValue={false}>
+      Whether the meta viewport tag is taken into account.
+    </ParamField>
+    <ParamField body='width' type='number' required>
+      The page width in pixels.
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+<ParamField body='presignedUrl' type='string'>
+  A presigned URL to upload the screenshot file directly to your S3 bucket.
+</ParamField>
+
+### Response
+
+<ResponseField name='url' type='string'>
+  URL from your file.
+</ResponseField>
+
+<RequestExample>
+
+```bash Example Request
+curl --location --request POST 'https://api.zumbi.dev/v1/screenshot' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Bearer <YOUR_API_KEY>' \
+--data-raw '{
+    "url": "https://zumbi.dev"
+}'
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json Response
+{
+  "url": "https://tmp.zumbi.dev/022bdcf5-c323-431c-a588-84082bc1bea0.png"
+}
+```
+
+</ResponseExample>

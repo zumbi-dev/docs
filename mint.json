@@ -1,0 +1,58 @@
+{
+  "$schema": "https://mintlify.com/schema.json",
+  "name": "Zumbi",
+  "logo": {
+    "dark": "/logo/dark.png",
+    "light": "/logo/light.png"
+  },
+  "favicon": "/favicon.png",
+  "colors": {
+    "primary": "#287d3e",
+    "light": "#a8fdbd",
+    "dark": "#287d3e"
+  },
+  "topbarLinks": [
+    {
+      "name": "Documentation",
+      "url": "https://docs.zumbi.dev"
+    }
+  ],
+  "topbarCtaButton": {
+    "name": "Get Started",
+    "url": "https://zumbi.dev"
+  },
+  "anchors": [
+    {
+      "name": "API Reference",
+      "icon": "rectangle-terminal",
+      "url": "api-reference"
+    },
+    {
+      "name": "Changelog",
+      "icon": "list",
+      "url": "https://zumbi.dev"
+    }
+  ],
+  "navigation": [
+    {
+      "group": "Home",
+      "pages": ["introduction", "client/nodejs"]
+    },
+    {
+      "group": "API Documentation",
+      "pages": ["api-reference/authentication"]
+    },
+    {
+      "group": "Endpoint Examples",
+      "pages": [
+        "api-reference/endpoint/pdf",
+        "api-reference/endpoint/screenshot"
+      ]
+    }
+  ],
+  "footerSocials": {
+    "twitter": "https://twitter.com/zumbi-dev",
+    "github": "https://github.com/zumbi-dev",
+    "linkedin": "https://www.linkedin.com/company/zumbi-dev"
+  }
+}
